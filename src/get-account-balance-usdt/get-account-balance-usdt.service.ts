@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-// import crypto from "crypto"
 import * as crypto from 'crypto';
 
 const apiUrl = 'https://api.binance.com/api'

@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { TakeListenKeyModule } from './take-listen-key/take-listen-key.module';
 import { GetAccountBalanceUsdtModule } from './get-account-balance-usdt/get-account-balance-usdt.module';
 import { StartBotModule } from './start-bot/start-bot.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TakeListenKeyModule, GetAccountBalanceUsdtModule, StartBotModule],
+  imports: [
+    ConfigModule.forRoot(), TakeListenKeyModule, GetAccountBalanceUsdtModule, StartBotModule],
   controllers: [AppController],
   providers: [AppService],
 })

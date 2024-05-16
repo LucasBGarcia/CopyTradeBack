@@ -62,9 +62,8 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: 1
         run: |
-          echo "${{ secrets.COSIGN_KEY }}" | base64 -d > cosign.key
+          echo "${{ secrets.COSIGN_KEY_NO_PASSWORD }}" > cosign.key
           echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign --key cosign.key {}@${{ steps.build-and-push.outputs.digest }}
-
 
           # name: Docker
 

@@ -5,7 +5,6 @@ import * as WebSocket from 'ws';
 export class StartBotService {
     async StartBot(listenKey: string): Promise<any> {
         const BINANCE_WS_URL = 'wss://stream.binance.com:9443/ws'
-        console.log(listenKey)
         return new Promise((resolve, reject) => {
             try {
                 if (listenKey) {

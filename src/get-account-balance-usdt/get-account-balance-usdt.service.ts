@@ -36,7 +36,7 @@ export class GetAccountBalanceUsdtService {
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
                 accountsBalance.push({
                     name: contas.name,
-                    balance: balance
+                    balance: Number(JSON.parse(balance))
                 })
             }))
             return JSON.stringify(accountsBalance)

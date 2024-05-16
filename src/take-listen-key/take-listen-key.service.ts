@@ -25,8 +25,5 @@ export class TakeListenKeyService {
             console.error('Erro:', e);
             return 'Erro interno';
         }
-        console.log('TEste')
-
-        return "listenkey"
     }
 }

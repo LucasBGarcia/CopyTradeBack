@@ -23,6 +23,10 @@ export class GetAccountBalanceUsdtService {
             });
             const res = await result.json()
             const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+            console.log('apikey', apiKey)
+            console.log('apiSecret', apiSecret)
+            console.log('filterBalance', filterBalance)
+
             return JSON.stringify(filterBalance[0].free)
         } catch (err) {
             console.error(err)
@@ -34,6 +38,8 @@ export class GetAccountBalanceUsdtService {
             let accountsBalance: object[] = []
             await Promise.all(contasSTR.map(async(contas:any)=>{
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
+                console.log('contas.name',contas.name)
+                console.log("Number(JSON.parse(balance))", Number(JSON.parse(balance)))
                 accountsBalance.push({
                     name: contas.name,
                     balance: Number(JSON.parse(balance))

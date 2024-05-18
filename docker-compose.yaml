@@ -12,14 +12,4 @@ services:
       - .:/home/node/app
       - /home/node/app/dist
       - /home/node/app/node_modules
-    # depends_on:
-    #   - db_prod
 
-    # db_prod:
-    #   image: mongo:6.0.2
-    #     #- ./.docker/mongo:/docker-entrypoint-initdb.d
-    #   environment:
-    #     - MONGO_INITDB_ROOT_USERNAME=root
-    #     - MONGO_INITDB_ROOT_PASSWORD=root
-    #     #- MONGO_INITDB_DATABASE=app
-    #     # entrypoint.init.db

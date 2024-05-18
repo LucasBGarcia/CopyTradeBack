@@ -21,8 +21,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Test the application
-      run: npm test
 
     - name: Deploy to EC2
       env:

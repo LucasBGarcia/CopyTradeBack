@@ -19,7 +19,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: |
-            cd ~home/ubuntu/actions-runner/_work/CopyTradeBack/CopyTradeBack/
+            cd ~/home/ubuntu/actions-runner/_work/CopyTradeBack/CopyTradeBack/
             rm -rf dist
             npm run build
     - run: npm ci

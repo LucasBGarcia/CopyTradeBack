@@ -21,6 +21,7 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+
     - name: Deploy to EC2
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -51,43 +52,3 @@ jobs:
 
         # Remove a chave SSH para segurança
         rm ssh_key
-
-
-
-# name: Deploy to EC2
-
-# on:
-#   push:
-#     branches:
-#       - master
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Setup Node.js
-#       uses: actions/setup-node@v2
-#       with:
-#         node-version: '20'  # Use a versão do Node.js que você está utilizando
-
-#     - name: Install dependencies
-#       run: npm install
-
-
-#     - name: Deploy to EC2
-#       env:
-#         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-#       run: |
-#         echo "${SSH_PRIVATE_KEY}" > ssh_key
-#         chmod 600 ssh_key
-#         scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/api-bot/
-#         ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com << 'EOF'
-#           cd ~/api-bot
-#           npm install
-#           npm run build  # ou o comando equivalente para compilar seu projeto NestJS
-#           pm2 restart all  # reinicie o PM2 para carregar as novas alterações
-#         EOF

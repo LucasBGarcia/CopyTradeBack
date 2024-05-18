@@ -28,7 +28,7 @@ jobs:
       run: |
         echo "${SSH_PRIVATE_KEY}" > ssh_key
         chmod 600 ssh_key
-        scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/home/api-bot/
+        scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/api-bot/
         ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com << 'EOF'
           cd ~/api-bot
           npm install

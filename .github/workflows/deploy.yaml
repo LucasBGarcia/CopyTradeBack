@@ -30,7 +30,7 @@ jobs:
         chmod 600 ssh_key
         scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/home/api-bot/
         ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com << 'EOF'
-          cd ~/home/api-bot
+          cd ~/api-bot
           npm install
           npm run build  # ou o comando equivalente para compilar seu projeto NestJS
           pm2 restart all  # reinicie o PM2 para carregar as novas alterações

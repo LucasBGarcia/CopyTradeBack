@@ -18,7 +18,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm run build  
+    - run: |
+            cd ./actions-runner/_work/CopyTradeBack/CopyTradeBack/
+            rm -rf dist
+            npm run build
     - run: npm ci
     - run: pm2 restart all
 

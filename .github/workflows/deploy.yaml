@@ -1,54 +1,79 @@
-name: Deploy to EC2
-
+name: Push-to-EC2
 on:
   push:
     branches:
       - master
-
 jobs:
   deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Checkout the files
+      uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'  # Use a versão do Node.js que você está utilizando
-
-    - name: Install dependencies
-      run: npm install
-
-
-    - name: Deploy to EC2
+    - name: Copy files with SSH
+      uses: easingthemes/ssh-deploy@master
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        # Escreve a chave SSH no arquivo e remove possíveis retornos de carro
-        echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ssh_key
-        chmod 600 ssh_key
+        SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+        ARGS: "-rltgoDzvO --delete"
+        SOURCE: "./"
+        REMOTE_HOST: "ec2-18-231-10-224.sa-east-1.compute.amazonaws.com"
+        REMOTE_USER: "ec2-user"
+        TARGET: "~/api-bot"
+        EXCLUDE: "/dist/, /node_modules/, **.env, rebuild_app.sh, watcher.sh"
+    
 
-        # Verifica as permissões do arquivo ssh_key
-        ls -l ssh_key
+# name: Deploy to EC2
 
-        # Opcional: Verifica o conteúdo do arquivo ssh_key (remova esta linha se a chave for secreta)
-        # cat ssh_key
+# on:
+#   push:
+#     branches:
+#       - main
 
-        # Teste de conexão SSH
-        ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com "echo 'SSH connection successful'"
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-        # Copia os arquivos para a EC2
-        scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/api-bot/
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
 
-        # Executa comandos na EC2
-        ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com << 'EOF'
-          cd ~/api-bot
-          npm install
-          npm run build  # ou o comando equivalente para compilar seu projeto NestJS
-          pm2 restart all  # reinicie o PM2 para carregar as novas alterações
-        EOF
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v2
+#       with:
+#         node-version: '20'  # Use a versão do Node.js que você está utilizando
 
-        # Remove a chave SSH para segurança
-        rm ssh_key
+#     - name: Install dependencies
+#       run: npm install
+
+
+#     - name: Deploy to EC2
+#       env:
+#         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#       run: |
+#         # Escreve a chave SSH no arquivo e remove possíveis retornos de carro
+#         echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ssh_key
+#         chmod 600 ssh_key
+
+#         # Verifica as permissões do arquivo ssh_key
+#         ls -l ssh_key
+
+#         # Opcional: Verifica o conteúdo do arquivo ssh_key (remova esta linha se a chave for secreta)
+#         # cat ssh_key
+
+#         # Teste de conexão SSH
+#         ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com "echo 'SSH connection successful'"
+
+#         # Copia os arquivos para a EC2
+#         scp -i ssh_key -o StrictHostKeyChecking=no -r ./* ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com:~/api-bot/
+
+#         # Executa comandos na EC2
+#         ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@ec2-18-231-10-224.sa-east-1.compute.amazonaws.com << 'EOF'
+#           cd ~/api-bot
+#           npm install
+#           npm run build  # ou o comando equivalente para compilar seu projeto NestJS
+#           pm2 restart all  # reinicie o PM2 para carregar as novas alterações
+#         EOF
+
+#         # Remove a chave SSH para segurança
+#         rm ssh_key

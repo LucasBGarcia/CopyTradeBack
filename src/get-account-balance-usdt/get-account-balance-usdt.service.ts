@@ -77,9 +77,7 @@ export class GetAccountBalanceUsdtService {
     async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
         console.log('API KEY', apiKey)
         console.log('API secret', apiSecret)
-        const key = 'LcDt9GIHnSEoCILPT86elqsODFxzAsRm9EK2SInAX0qZrzAY0boAks579ePpxSsy'
-        const secret = 'eQaoMJdUfjXDHwDT3NT17ESKBK2dh2aoc9EIhjpNV23QjXlJE3GanPmnY0SBrlL5'
-        try {
+         try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');
             }
@@ -87,23 +85,17 @@ export class GetAccountBalanceUsdtService {
             const timeData = await timeRes.json();
             const timestamp = timeData.serverTime;
             const queryString = `timestamp=${timestamp}`;
-            const signature = generateSignature(queryString, secret);
+            const signature = generateSignature(queryString, apiSecret);
             const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
                 method: 'GET',
                 headers: {
-                    'X-MBX-APIKEY': key
+                    'X-MBX-APIKEY': apiKey
                 },
             });
             if(result){
                 const res = await result.json()
-                console.log('REEEEES', res)
-                // const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
-                const filterBalance2 =[ { asset: 'USDT', free: '575.55844108', locked: '0.00000000' } ]
-                console.log('apikey', apiKey)
-                console.log('apiSecret', apiSecret)
-                console.log('filterBalance', filterBalance2)
-    
-                return JSON.stringify(filterBalance2[0].free)
+                const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+                return JSON.stringify(filterBalance[0].free)
 
             }
             return '0'
@@ -113,13 +105,10 @@ export class GetAccountBalanceUsdtService {
         }
     }
     async getUSDTBalanceAllAccs(contasSTR: object[]): Promise<any> {
-        console.log('obect', contasSTR)
         try {
             let accountsBalance: object[] = []
             await Promise.all(contasSTR.map(async (contas: any) => {
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
-                console.log('contas.name', contas.name)
-                console.log("Number(JSON.parse(balance))", Number(JSON.parse(balance)))
                 accountsBalance.push({
                     name: contas.name,
                     balance: Number(JSON.parse(balance))

@@ -102,7 +102,7 @@ export class GetAccountBalanceUsdtService {
                 console.log('apiSecret', apiSecret)
                 console.log('filterBalance', filterBalance2)
     
-                return JSON.stringify(filterBalance[0].free)
+                return JSON.stringify(filterBalance2[0].free)
 
             }
             return '0'

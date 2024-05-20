@@ -7,6 +7,9 @@ const apiUrl = 'https://api.binance.com/api';
 @Injectable()
 export class GetAccountBalanceUsdtService {
     async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
+        console.log('API KEY', apiKey)
+        console.log('API secret', apiSecret)
+
         try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');

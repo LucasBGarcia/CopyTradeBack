@@ -15,14 +15,15 @@ export class GetAccountBalanceUsdtService {
             const timestamp = timeData.serverTime;
             const queryString = `timestamp=${timestamp}`;
             const signature = generateSignature(queryString, apiSecret);
-            const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
-                method: 'GET',
-                headers: {
-                    'X-MBX-APIKEY': apiKey
-                },
-            });
-            const res = await result.json()
-            const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+            // const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'X-MBX-APIKEY': apiKey
+            //     },
+            // });
+                        // const res = await result.json()
+            // const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+            const filterBalance = [ { asset: 'USDT', free: '575.55844108', locked: '0.00000000' } ]
             console.log('apikey', apiKey)
             console.log('apiSecret', apiSecret)
             console.log('filterBalance', filterBalance)
@@ -42,7 +43,9 @@ export class GetAccountBalanceUsdtService {
                 console.log("Number(JSON.parse(balance))", Number(JSON.parse(balance)))
                 accountsBalance.push({
                     name: contas.name,
-                    balance: Number(JSON.parse(balance))
+                    balance: 37777
+
+                    // balance: Number(JSON.parse(balance))
                 })
             }))
             return JSON.stringify(accountsBalance)

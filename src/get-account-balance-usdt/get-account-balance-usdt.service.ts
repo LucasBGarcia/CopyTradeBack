@@ -75,6 +75,9 @@ const apiUrl = 'https://api.binance.com/api'
 @Injectable()
 export class GetAccountBalanceUsdtService {
     async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
+        console.log('API KEY', apiKey)
+        console.log('API secret', apiSecret)
+
         try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');
@@ -84,14 +87,15 @@ export class GetAccountBalanceUsdtService {
             const timestamp = timeData.serverTime;
             const queryString = `timestamp=${timestamp}`;
             const signature = generateSignature(queryString, apiSecret);
-            const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
-                method: 'GET',
-                headers: {
-                    'X-MBX-APIKEY': apiKey
-                },
-            });
-            const res = await result.json()
-            const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+            // const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'X-MBX-APIKEY': apiKey
+            //     },
+            // });
+            // const res = await result.json()
+            // const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+            const filterBalance =[ { asset: 'USDT', free: '575.55844108', locked: '0.00000000' } ]
             console.log('apikey', apiKey)
             console.log('apiSecret', apiSecret)
             console.log('filterBalance', filterBalance)
@@ -103,18 +107,21 @@ export class GetAccountBalanceUsdtService {
         }
     }
     async getUSDTBalanceAllAccs(contasSTR: object[]): Promise<any> {
+        console.log('obect', contasSTR)
         try {
             let accountsBalance: object[] = []
-            await Promise.all(contasSTR.map(async(contas:any)=>{
+            await Promise.all(contasSTR.map(async (contas: any) => {
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
-                console.log('contas.name',contas.name)
+                console.log('contas.name', contas.name)
                 console.log("Number(JSON.parse(balance))", Number(JSON.parse(balance)))
                 accountsBalance.push({
                     name: contas.name,
                     balance: Number(JSON.parse(balance))
                 })
             }))
+            // return JSON.stringify(accountsBalance)
             return JSON.stringify(accountsBalance)
+
         } catch (err) {
             console.error(err)
             throw err;

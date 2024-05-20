@@ -77,7 +77,8 @@ export class GetAccountBalanceUsdtService {
     async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
         console.log('API KEY', apiKey)
         console.log('API secret', apiSecret)
-
+        const key = 'LcDt9GIHnSEoCILPT86elqsODFxzAsRm9EK2SInAX0qZrzAY0boAks579ePpxSsy'
+        const secret = 'eQaoMJdUfjXDHwDT3NT17ESKBK2dh2aoc9EIhjpNV23QjXlJE3GanPmnY0SBrlL5'
         try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');
@@ -86,11 +87,11 @@ export class GetAccountBalanceUsdtService {
             const timeData = await timeRes.json();
             const timestamp = timeData.serverTime;
             const queryString = `timestamp=${timestamp}`;
-            const signature = generateSignature(queryString, apiSecret);
+            const signature = generateSignature(queryString, secret);
             const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
                 method: 'GET',
                 headers: {
-                    'X-MBX-APIKEY': apiKey
+                    'X-MBX-APIKEY': key
                 },
             });
             if(result){

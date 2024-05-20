@@ -93,14 +93,18 @@ export class GetAccountBalanceUsdtService {
                     'X-MBX-APIKEY': apiKey
                 },
             });
-            const res = await result.json()
-            const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
-            const filterBalance2 =[ { asset: 'USDT', free: '575.55844108', locked: '0.00000000' } ]
-            console.log('apikey', apiKey)
-            console.log('apiSecret', apiSecret)
-            console.log('filterBalance', filterBalance)
+            if(result){
+                const res = await result.json()
+                const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
+                const filterBalance2 =[ { asset: 'USDT', free: '575.55844108', locked: '0.00000000' } ]
+                console.log('apikey', apiKey)
+                console.log('apiSecret', apiSecret)
+                console.log('filterBalance', filterBalance)
+    
+                return JSON.stringify(filterBalance[0].free)
 
-            return JSON.stringify(filterBalance[0].free)
+            }
+            return '0'
         } catch (err) {
             console.error(err)
             throw err;

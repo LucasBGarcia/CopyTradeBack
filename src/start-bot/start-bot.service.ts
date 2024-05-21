@@ -3,16 +3,16 @@ import * as WebSocket from 'ws';
 
 @Injectable()
 export class StartBotService {
-    async StartBot(listenKey: string,AtivaBot:boolean): Promise<any> {
+    async StartBot(listenKey: string, AtivaBot: boolean): Promise<any> {
         const BINANCE_WS_URL = 'wss://stream.binance.com:9443/ws'
-        return new Promise((resolve, reject) => {
-            try {
-                if (listenKey && AtivaBot) {
+        if (listenKey && AtivaBot) {
+            return new Promise((resolve, reject) => {
+                try {
                     const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
                     ws.onmessage = async (event: any) => {
                         const trade = JSON.parse(event.data)
                         console.log('trade', trade)
-                        if( trade.e ==='executionReport'){
+                        if (trade.e === 'executionReport') {
                             const retorno = {
                                 value: trade,
                                 status: 200
@@ -20,17 +20,16 @@ export class StartBotService {
                             resolve(JSON.stringify(retorno));
                         }
                     }
-                }else{
-                    resolve('Bot pausado')
+                } catch (err) {
+                    const retorno = {
+                        value: `Erro no retorno StartBot: ${err.data}`,
+                        status: 400
+                    }
+                    reject(JSON.stringify(retorno));
                 }
-            } catch (err) {
-                const retorno = {
-                    value: `Erro no retorno StartBot: ${err.data}`,
-                    status: 400
-                }
-                reject(JSON.stringify(retorno));
-            }
-        });
-
+            });
+        } else {
+            return ('Bot pausado')
+        }
     }
 }

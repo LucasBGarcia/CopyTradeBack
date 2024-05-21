@@ -74,7 +74,7 @@ const apiUrl = 'https://api.binance.com/api'
 
 @Injectable()
 export class GetAccountBalanceUsdtService {
-    async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
+ async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
         try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');
@@ -138,9 +138,34 @@ export class GetAccountBalanceUsdtService {
         }
     }
 
+    async getAllBalance(apiSecret: string, apiKey: string): Promise<any> {
+        try {
+            console.log('apistring', apiSecret, apiKey)
+            const timestamp = Date.now();
+    
+            const queryString = `timestamp=${timestamp}`;
+    
+            const signature = generateSignature(queryString, apiSecret);
+    
+            const result = await fetch(`${apiUrl}/v3/account?${queryString}&signature=${signature}`, {
+                method: 'GET',
+                headers: {
+                    'X-MBX-APIKEY': apiKey,
+                },
+            });
+            
+            const response = await result.json()
+            console.log('resulto infoAccount', response)
+            return JSON.stringify(response)
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
 }
 
 function generateSignature(queryString: string, apiSecret: string) {
     return crypto.createHmac('sha256', apiSecret).update(queryString).digest('hex');
 }
+

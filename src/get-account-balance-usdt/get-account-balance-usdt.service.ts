@@ -113,10 +113,9 @@ export class GetAccountBalanceUsdtService {
             let accountsBalance: object[] = []
             await Promise.all(contasSTR.map(async (contas: any) => {
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
-                console.log('BALANCE', contas.name, balance, Number(JSON.parse(balance)))
                 accountsBalance.push({
                     name: contas.name,
-                    balance: Number(JSON.parse(balance))
+                    balance: Number(JSON.parse(balance.value))
                 })
             }))
             const retorno = {

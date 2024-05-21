@@ -7,8 +7,10 @@ export class StartBotController {
 
     @Post()
     StartBot(
-        @Body('listenKey') listenKey:string
+        @Body('listenKey') listenKey:string,
+        @Body('AtivaBot') AtivaBot:boolean
+
     ):Promise<any>{
-        return this.startBotService.StartBot(listenKey)
+        return this.startBotService.StartBot(listenKey,AtivaBot)
     }
 }

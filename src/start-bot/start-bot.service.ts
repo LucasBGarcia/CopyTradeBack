@@ -3,11 +3,11 @@ import * as WebSocket from 'ws';
 
 @Injectable()
 export class StartBotService {
-    async StartBot(listenKey: string): Promise<any> {
+    async StartBot(listenKey: string,AtivaBot:boolean): Promise<any> {
         const BINANCE_WS_URL = 'wss://stream.binance.com:9443/ws'
         return new Promise((resolve, reject) => {
             try {
-                if (listenKey) {
+                if (listenKey && AtivaBot) {
                     const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
                     ws.onmessage = async (event: any) => {
                         const trade = JSON.parse(event.data)
@@ -20,6 +20,8 @@ export class StartBotService {
                             resolve(JSON.stringify(retorno));
                         }
                     }
+                }else{
+                    resolve('Bot pausado')
                 }
             } catch (err) {
                 const retorno = {

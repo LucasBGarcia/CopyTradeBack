@@ -98,8 +98,14 @@ export class GetAccountBalanceUsdtService {
                     status: 200
                 }
                 return JSON.stringify(retorno)
+            } else {
+                const retorno = {
+                    value: '0101010',
+                    status: 200
+                }
+                return JSON.stringify(retorno)
+
             }
-            return '0'
         } catch (err) {
             const retorno = {
                 value: `Erro no retorno getUSDTBalance: ${err.data}`,
@@ -113,9 +119,10 @@ export class GetAccountBalanceUsdtService {
             let accountsBalance: object[] = []
             await Promise.all(contasSTR.map(async (contas: any) => {
                 const balance = await this.getUSDTBalance(contas.key, contas.secret)
+                const parseBalance = JSON.parse(balance)
                 accountsBalance.push({
                     name: contas.name,
-                    balance: Number(JSON.parse(balance.value))
+                    balance: Number(JSON.parse(parseBalance.value))
                 })
             }))
             const retorno = {

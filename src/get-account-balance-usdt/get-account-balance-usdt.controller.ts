@@ -21,7 +21,6 @@ export class GetAllAccountsBalanceUsdtController {
     getUSDTBalanceAllAccs(
         @Body('contasSTR') contasSTR:object[],
     ):Promise<any>{
-        console.log('teste')
         return this.accountService.getUSDTBalanceAllAccs(contasSTR)
     }
 }

@@ -77,7 +77,7 @@ export class GetAccountBalanceUsdtService {
     async getUSDTBalance(apiKey: string, apiSecret: string): Promise<any> {
         console.log('API KEY', apiKey)
         console.log('API secret', apiSecret)
-         try {
+        try {
             if (!apiSecret) {
                 throw new Error('API secret is not defined!');
             }
@@ -92,16 +92,22 @@ export class GetAccountBalanceUsdtService {
                     'X-MBX-APIKEY': apiKey
                 },
             });
-            if(result){
+            if (result) {
                 const res = await result.json()
                 const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
-                return JSON.stringify(filterBalance[0].free)
-
+                const retorno = {
+                    value: filterBalance[0].free,
+                    status: 200
+                }
+                return JSON.stringify(retorno)
             }
             return '0'
         } catch (err) {
-            console.error(err)
-            throw err;
+            const retorno = {
+                value: `Erro no retorno getUSDTBalance: ${err.data}`,
+                status: 400
+            }
+            return JSON.stringify(retorno)
         }
     }
     async getUSDTBalanceAllAccs(contasSTR: object[]): Promise<any> {
@@ -114,10 +120,17 @@ export class GetAccountBalanceUsdtService {
                     balance: Number(JSON.parse(balance))
                 })
             }))
-            return JSON.stringify(accountsBalance)
+            const retorno = {
+                value: accountsBalance,
+                status: 200
+            }
+            return JSON.stringify(retorno)
         } catch (err) {
-            console.error(err)
-            throw err;
+            const retorno = {
+                value: `Erro no retorno getUSDTBalanceAllAccs: ${err.data}`,
+                status: 400
+            }
+            return JSON.stringify(retorno)
         }
     }
 

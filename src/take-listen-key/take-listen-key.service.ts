@@ -16,14 +16,24 @@ export class TakeListenKeyService {
                     },
                 });
                 const data = await result.json();
-                return data;
+                const retorno = {
+                    value: data,
+                    status: 200
+                }
+                return JSON.stringify(retorno);
             } catch (err) {
-                console.error('Erro ao fazer a requisição:', err);
-                return 'Erro ao fazer a requisição';
+                const retorno = {
+                    value: `Erro no fetch de getApiListeKey: ${err.data}`,
+                    status: 400
+                }
+                return JSON.stringify(retorno);
             }
         } catch (e) {
-            console.error('Erro:', e);
-            return 'Erro interno';
+            const retorno = {
+                value: `Erro no retorno de getApiListeKey: ${e.data}`,
+                status: 400
+            }
+            return JSON.stringify(retorno);
         }
     }
 }

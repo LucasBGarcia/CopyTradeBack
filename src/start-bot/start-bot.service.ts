@@ -13,12 +13,20 @@ export class StartBotService {
                         const trade = JSON.parse(event.data)
                         console.log('trade', trade)
                         if( trade.e ==='executionReport'){
-                            resolve(JSON.stringify(trade));
+                            const retorno = {
+                                value: trade,
+                                status: 200
+                            }
+                            resolve(JSON.stringify(retorno));
                         }
                     }
                 }
             } catch (err) {
-                reject(err);
+                const retorno = {
+                    value: `Erro no retorno StartBot: ${err.data}`,
+                    status: 400
+                }
+                reject(JSON.stringify(retorno));
             }
         });
 

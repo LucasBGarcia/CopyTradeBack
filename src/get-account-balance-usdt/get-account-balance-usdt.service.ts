@@ -67,7 +67,7 @@
 
 
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import * as crypto from 'crypto';
 
 const apiUrl = 'https://api.binance.com/api'
@@ -90,21 +90,20 @@ export class GetAccountBalanceUsdtService {
                     'X-MBX-APIKEY': apiKey
                 },
             });
-            if (result) {
-                const res = await result.json()
+            const res = await result.json()
+            if (res && !res.code) {
                 const filterBalance = res.balances.filter((balance: { asset: string; }) => balance.asset === 'USDT')
                 const retorno = {
                     value: filterBalance[0].free,
                     status: 200
                 }
                 return JSON.stringify(retorno)
-            } else {
+            } else  if(res.code == -2015){
                 const retorno = {
-                    value: '0101010',
+                    value: 101010101010,
                     status: 200
                 }
                 return JSON.stringify(retorno)
-
             }
         } catch (err) {
             const retorno = {

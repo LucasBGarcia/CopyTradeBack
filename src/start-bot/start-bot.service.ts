@@ -11,36 +11,36 @@ export class StartBotService {
 
         if (listenKey && AtivaBot) {
             console.log('Initializing WebSocket connection...');
-            return("teste ")
             // return new Promise((resolve, reject) => {
-            //     try {
-            //         const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
-            //         console.log('WS',ws)
-            //         ws.onmessage = (event: any) => {
-            //             const trade = JSON.parse(event.data);
-            //             console.log('trade', trade);
+                try {
+                    const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
+                    console.log('WS',ws)
+                    ws.onmessage = (event: any) => {
+                        const trade = JSON.parse(event.data);
+                        console.log('trade', trade);
 
-            //             if (trade.e === 'executionReport') {
-            //                 const retorno = {
-            //                     value: trade,
-            //                     status: 200
-            //                 };
-            //                 resolve(retorno);
-            //             }
-            //         };
+                        if (trade.e === 'executionReport') {
+                            const retorno = {
+                                value: trade,
+                                status: 200
+                            };
+                            // resolve(retorno);
+                            return(retorno);
+                        }
+                    };
 
-            //         ws.onerror = (err) => {
-            //             console.error('WebSocket error:', err);
-            //             reject(`WebSocket error: ${err.message}`);
-            //         };
+                    ws.onerror = (err) => {
+                        console.error('WebSocket error:', err);
+                        // reject(`WebSocket error: ${err.message}`);
+                    };
 
-            //         ws.onclose = () => {
-            //             console.log('WebSocket connection closed');
-            //         };
-            //     } catch (err) {
-            //         console.error('Error in WebSocket connection:', err);
-            //         reject(`Erro no retorno StartBot: ${err.message}`);
-            //     }
+                    ws.onclose = () => {
+                        console.log('WebSocket connection closed');
+                    };
+                } catch (err) {
+                    console.error('Error in WebSocket connection:', err);
+                    // reject(`Erro no retorno StartBot: ${err.message}`);
+                }
             // });
         } else {
             return Promise.resolve('Bot pausado');

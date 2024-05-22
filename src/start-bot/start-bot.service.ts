@@ -11,7 +11,7 @@ export class StartBotService {
 
         if (listenKey && AtivaBot) {
             console.log('Initializing WebSocket connection...');
-            // return new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 try {
                     const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
                     console.log('WS',ws)
@@ -24,14 +24,14 @@ export class StartBotService {
                                 value: trade,
                                 status: 200
                             };
-                            // resolve(retorno);
-                            return(retorno);
+                            resolve(retorno);
+                            // return(retorno);
                         }
                     };
 
                     ws.onerror = (err) => {
                         console.error('WebSocket error:', err);
-                        // reject(`WebSocket error: ${err.message}`);
+                        reject(`WebSocket error: ${err.message}`);
                     };
 
                     ws.onclose = () => {
@@ -39,9 +39,9 @@ export class StartBotService {
                     };
                 } catch (err) {
                     console.error('Error in WebSocket connection:', err);
-                    // reject(`Erro no retorno StartBot: ${err.message}`);
+                    reject(`Erro no retorno StartBot: ${err.message}`);
                 }
-            // });
+            });
         } else {
             return Promise.resolve('Bot pausado');
         }

@@ -5,6 +5,7 @@ import * as WebSocket from 'ws';
 export class StartBotService {
     async StartBot(listenKey: string, AtivaBot: boolean): Promise<any> {
         const BINANCE_WS_URL = 'wss://stream.binance.com:9443/ws'
+        console.log('LISTENKEY', listenKey, 'ATIVABOT', AtivaBot)
         if (listenKey && AtivaBot) {
             return new Promise((resolve, reject) => {
                 try {
@@ -21,6 +22,7 @@ export class StartBotService {
                         }
                     }
                 } catch (err) {
+                    console.log('err', err.data)
                     const retorno = {
                         value: `Erro no retorno StartBot: ${err.data}`,
                         status: 400

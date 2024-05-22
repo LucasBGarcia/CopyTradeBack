@@ -8,9 +8,6 @@ export class NewTradeService {
         accounts: object[],
         ValorInicialMaster: number,
         KeysMaster: object) {
-        console.log('ValorInicialMaster', ValorInicialMaster)
-        console.log('KeysMaster', KeysMaster)
-
 
         const porcentagemMaster = await tradePorcentageMaster(ValorInicialMaster, KeysMaster)
         console.log('porcentagemMaster', porcentagemMaster)

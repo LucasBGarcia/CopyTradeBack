@@ -14,7 +14,7 @@ export class StartBotService {
             return new Promise((resolve, reject) => {
                 try {
                     const ws = new WebSocket(`${BINANCE_WS_URL}/${listenKey}`);
-
+                    console.log('WS',ws)
                     ws.onmessage = (event: any) => {
                         const trade = JSON.parse(event.data);
                         console.log('trade', trade);
